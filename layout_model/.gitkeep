@@ -1,0 +1,5 @@
+# Place the downloaded layout ONNX model(s) in this directory.
+# See scripts/download_models.py or the README for instructions.
+#
+# Expected filename pattern: RT-DETR_<MODEL_ID>.onnx  (e.g. RT-DETR_25.onnx)
+# Source: https://huggingface.co/PatSnap/Hiro-Layout

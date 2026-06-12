@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtualenv / uv
+.venv/
+venv/
+
+# Tooling caches
+.idea/
+.vscode/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.DS_Store
+
+# Runtime artifacts
+logs/
+*.log
+output_images/
+data/
+
+# Local environment overrides
+.env
+custom.env
+local.env
+
+# Model weights (download from Hugging Face, see scripts/download_models.py)
+layout_model/*.onnx
