@@ -68,7 +68,9 @@ OpenAI-compatible service that this app calls over HTTP.
 - **[uv](https://docs.astral.sh/uv/)** for environment and dependency management
 - **A running MOSS-OCR endpoint** (OpenAI-compatible / vLLM). See
   [Hiro-MOSS-OCR](https://github.com/patsnap/Hiro-MOSS-OCR) for how to serve the
-  model.
+  model. Run it as a separate service from Hiro-Smart-Doc; for example, if
+  Smart-Doc listens on `8000`, serve MOSS-OCR on `8088` and set
+  `MOSS_VLLM_OCR_API=http://127.0.0.1:8088/v1`.
 - **(Optional) An external LibreOffice unoserver**, only if you need to parse
   Office documents. Disabled by default; see
   [(Optional) Office document conversion](#optional-office-document-conversion).
@@ -132,7 +134,7 @@ Key settings:
 | `MODEL_ID`              | Default layout model id                                  | `25`    |
 | `LAYOUT_MODEL_DIR`      | Directory holding `RT-DETR_<id>.onnx`                    | `./layout_model` |
 | `RUNTIME_BACKEND`       | Inference backend                                        | `ONNX`  |
-| `MOSS_VLLM_OCR_API`     | OpenAI-compatible MOSS-OCR endpoint (`.../v1`)           | `http://127.0.0.1:8000/v1` |
+| `MOSS_VLLM_OCR_API`     | OpenAI-compatible MOSS-OCR endpoint (`.../v1`)           | `http://127.0.0.1:8088/v1` |
 | `MOSS_VLLM_OCR_API_KEY` | API key for the OCR endpoint                             | `EMPTY` |
 | `MOSS_VLLM_MODEL`       | OCR model name served by the endpoint                    | `moss-v1d6-0.3b` |
 | `PDF_RENDER_DPI`        | DPI used when rendering PDF pages to images              | `150`   |
@@ -208,6 +210,11 @@ uv run gunicorn --config gunicorn.conf.py hiro_smart_doc.base_app:app
 ```
 
 Open the Swagger UI at <http://127.0.0.1:8000/docs>.
+
+> If the logs show `POST /v1/chat/completions ... 404 Not Found`, the OCR
+> endpoint is probably pointing at the Hiro-Smart-Doc API server instead of the
+> MOSS-OCR/vLLM server. Keep `RD_INTERNAL_PORT` and the MOSS service port
+> separate, and make sure `MOSS_VLLM_OCR_API` includes the `/v1` suffix.
 
 ### Gradio UI (optional)
 

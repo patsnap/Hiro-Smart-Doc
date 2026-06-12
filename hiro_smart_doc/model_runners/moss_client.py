@@ -102,7 +102,7 @@ class MOSSOCRPipeline:
         max_length: int = 2048,
         max_retry: int = 3,
         max_concurrent: int = 32,
-        url: str = "http://127.0.0.1:8000/v1",
+        url: str = "http://127.0.0.1:8088/v1",
         api_key: str = "EMPTY",
         timeout: int = 3600,
         detect_repeat: bool = True,

@@ -63,7 +63,9 @@ RT-DETR 版面模型检测页面区域（正文、表格、公式、图片、化
 - **Python 3.12+**
 - **[uv](https://docs.astral.sh/uv/)** 用于环境与依赖管理
 - **可访问的 MOSS-OCR 接口**（OpenAI 兼容 / vLLM）。部署方式参见
-  [Hiro-MOSS-OCR](https://github.com/patsnap/Hiro-MOSS-OCR)。
+  [Hiro-MOSS-OCR](https://github.com/patsnap/Hiro-MOSS-OCR)。请将其作为独立服务
+  与 Hiro-Smart-Doc 分开运行；例如 Smart-Doc 监听 `8000`，则将 MOSS-OCR 部署在
+  `8088`，并设置 `MOSS_VLLM_OCR_API=http://127.0.0.1:8088/v1`。
 - **（可选）外部 LibreOffice unoserver**，仅在需要解析 Office 文档时使用。
   默认关闭，部署方式见下方[（可选）Office 文档转换](#可选office-文档转换)。
 
@@ -125,7 +127,7 @@ cp .env.example .env
 | `MODEL_ID`              | 默认版面模型 id                                   | `25`   |
 | `LAYOUT_MODEL_DIR`      | 存放 `RT-DETR_<id>.onnx` 的目录                  | `./layout_model` |
 | `RUNTIME_BACKEND`       | 推理后端                                          | `ONNX` |
-| `MOSS_VLLM_OCR_API`     | OpenAI 兼容的 MOSS-OCR 接口（`.../v1`）          | `http://127.0.0.1:8000/v1` |
+| `MOSS_VLLM_OCR_API`     | OpenAI 兼容的 MOSS-OCR 接口（`.../v1`）          | `http://127.0.0.1:8088/v1` |
 | `MOSS_VLLM_OCR_API_KEY` | OCR 接口的 API key                               | `EMPTY` |
 | `MOSS_VLLM_MODEL`       | 接口提供的 OCR 模型名称                           | `moss-v1d6-0.3b` |
 | `PDF_RENDER_DPI`        | PDF 页面渲染为图像的 DPI                          | `150`  |
@@ -196,6 +198,11 @@ uv run gunicorn --config gunicorn.conf.py hiro_smart_doc.base_app:app
 ```
 
 访问 Swagger UI：<http://127.0.0.1:8000/docs>。
+
+> 若日志中出现 `POST /v1/chat/completions ... 404 Not Found`，通常说明 OCR 接口
+> 指向了 Hiro-Smart-Doc 的 API 服务，而非 MOSS-OCR/vLLM 服务。请将
+> `RD_INTERNAL_PORT` 与 MOSS 服务端口区分开，并确保 `MOSS_VLLM_OCR_API` 带有
+> `/v1` 后缀。
 
 ### Gradio 界面（可选）
 

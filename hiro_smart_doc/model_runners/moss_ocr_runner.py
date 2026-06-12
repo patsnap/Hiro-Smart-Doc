@@ -39,7 +39,7 @@ class MossOcrRunner:
     """OpenAI-compatible MOSS OCR (VLLM)."""
 
     def __init__(self) -> None:
-        url = os.getenv("MOSS_VLLM_OCR_API", "http://127.0.0.1:8000/v1")
+        url = os.getenv("MOSS_VLLM_OCR_API", "http://127.0.0.1:8088/v1")
         api_key= os.getenv("MOSS_VLLM_OCR_API_KEY", "EMPTY")
         max_concurent= int(os.getenv("MOSS_VLLM_OCR_MAX_CONCURRENT", "32"))      
         model_path = os.getenv("MOSS_VLLM_MODEL", MOSSOCRPipeline.MODEL_NAME)
