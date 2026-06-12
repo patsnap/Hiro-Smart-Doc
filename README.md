@@ -211,10 +211,9 @@ uv run gunicorn --config gunicorn.conf.py hiro_smart_doc.base_app:app
 
 Open the Swagger UI at <http://127.0.0.1:8000/docs>.
 
-> If the logs show `POST /v1/chat/completions ... 404 Not Found`, the OCR
-> endpoint is probably pointing at the Hiro-Smart-Doc API server instead of the
-> MOSS-OCR/vLLM server. Keep `RD_INTERNAL_PORT` and the MOSS service port
-> separate, and make sure `MOSS_VLLM_OCR_API` includes the `/v1` suffix.
+> If the logs show `POST /v1/chat/completions ... 404 Not Found`, double-check
+> `MOSS_VLLM_OCR_API`: it must point at the MOSS-OCR/vLLM server (not the
+> Hiro-Smart-Doc API) and include the `/v1` suffix.
 
 ### Gradio UI (optional)
 

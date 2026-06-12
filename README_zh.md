@@ -199,10 +199,9 @@ uv run gunicorn --config gunicorn.conf.py hiro_smart_doc.base_app:app
 
 访问 Swagger UI：<http://127.0.0.1:8000/docs>。
 
-> 若日志中出现 `POST /v1/chat/completions ... 404 Not Found`，通常说明 OCR 接口
-> 指向了 Hiro-Smart-Doc 的 API 服务，而非 MOSS-OCR/vLLM 服务。请将
-> `RD_INTERNAL_PORT` 与 MOSS 服务端口区分开，并确保 `MOSS_VLLM_OCR_API` 带有
-> `/v1` 后缀。
+> 若日志中出现 `POST /v1/chat/completions ... 404 Not Found`，请检查
+> `MOSS_VLLM_OCR_API`：它应指向 MOSS-OCR/vLLM 服务（而非 Hiro-Smart-Doc 的 API），
+> 并带有 `/v1` 后缀。
 
 ### Gradio 界面（可选）
 
